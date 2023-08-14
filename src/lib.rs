@@ -4,15 +4,17 @@ use core::fmt;
 use spin::Mutex;
 use syscalls::{syscall, Sysno};
 
-pub mod io;
 pub mod exec;
+pub mod io;
 
 struct Writer {}
-static WRITER: Mutex<Writer> = Mutex::new(Writer {  });
+static WRITER: Mutex<Writer> = Mutex::new(Writer {});
 
 impl fmt::Write for Writer {
     fn write_str(&mut self, s: &str) -> fmt::Result {
-        unsafe {let _ = syscall!(Sysno::write, 1, s.as_ptr(), s.len());}
+        unsafe {
+            let _ = syscall!(Sysno::write, 1, s.as_ptr(), s.len());
+        }
         Ok(())
     }
 }
