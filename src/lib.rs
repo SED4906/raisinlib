@@ -1,6 +1,6 @@
 #![feature(error_in_core)]
 #![no_std]
-use core::{fmt, error::Error};
+use core::fmt;
 use spin::Mutex;
 use syscalls::{syscall, Sysno};
 
@@ -12,7 +12,7 @@ static WRITER: Mutex<Writer> = Mutex::new(Writer {  });
 
 impl fmt::Write for Writer {
     fn write_str(&mut self, s: &str) -> fmt::Result {
-        unsafe {syscall!(Sysno::write, 1, s.as_ptr(), s.len())};
+        unsafe {let _ = syscall!(Sysno::write, 1, s.as_ptr(), s.len());}
         Ok(())
     }
 }

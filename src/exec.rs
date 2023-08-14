@@ -7,7 +7,7 @@ pub fn execute(file: &[u8], args: &[*const u8]) -> Result<usize, syscalls::Errno
 pub fn spawn(buf: &[u8], args: &[*const u8]) -> Result<usize, syscalls::Errno> {
     let pid = unsafe{syscall!(Sysno::fork)}?;
     if pid == 0 {
-        execute(&buf, &args)
+        execute(buf, args)
     } else {
         Ok(pid)
     }

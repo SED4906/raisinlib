@@ -1,11 +1,11 @@
-use core::{fmt::{Display, Write}, num};
+use core::fmt::{Display, Write};
 use syscalls::{syscall, Sysno};
 
 #[derive(Debug)]
 pub struct Error ();
 
 impl Display for Error {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+    fn fmt(&self, _f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         Ok(())
     }
 }
@@ -39,7 +39,7 @@ impl File {
         }
     }
     pub fn close(&self) {
-        unsafe {syscall!(Sysno::close, self.0)};
+        unsafe {let _ = syscall!(Sysno::close, self.0);}
     }
 }
 
@@ -49,7 +49,7 @@ impl core::fmt::Display for Utf8String<'_> {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         for c in self.0 {
             if let Some(c) = char::from_u32(*c as u32) {
-                f.write_char(c);
+                let _ = f.write_char(c);
             }
         }
         Ok(())
